@@ -8,6 +8,7 @@ $(document).ready(function(){
 	//Lets save the cell width in a variable for easy control
 	var cw = 10;
 	var d;
+	var df;
 	var food;
 	var score;
 
@@ -25,7 +26,7 @@ $(document).ready(function(){
 		//Lets move the snake now using a timer which will trigger the paint function
 		//every 60ms
 		if(typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(paint, 60);
+		game_loop = setInterval(paint, 33);
 	}
 	init();
 
@@ -74,6 +75,11 @@ $(document).ready(function(){
 		else if(d == "up") ny--;
 		else if(d == "down") ny++;
 
+		if(df == "right") 		food.x++;
+		else if(df == "left") 		food.x--;
+		else if(df == "up") 		food.y--;
+		else if(df == "down") 		food.y++;
+
 		//Lets add the game over clauses now
 		//This will restart the game if the snake hits the wall
 		//Lets add the code for body collision
@@ -86,22 +92,37 @@ $(document).ready(function(){
 			return;
 		}
 
+		function isCaptured(){
+			if(nx == food.x && ny == food.y){
+				return true;
+			}
+			for(var i = 0; i < snake_array.length; i++){
+				if(snake_array[i].x == food.x && snake_array[i].y == food.y)
+				 return true;
+			}
+			return false;
+		}
+
+		if( isCaptured() ){
+			console.log('captured');
+		}
+
+
+
+
+
 		//Lets write the code to make the snake eat the food
 		//The logic is simple
 		//If the new head position matches with that of the food,
 		//Create a new head instead of moving the tail
-		if(nx == food.x && ny == food.y)
-		{
-			var tail = {x: nx, y: ny};
+		if(nx == food.x && ny == food.y) {
 			score++;
-			//Create new food
 			create_food();
 		}
-		else
-		{
-			var tail = snake_array.pop(); //pops out the last cell
-			tail.x = nx; tail.y = ny;
+		else {
+			//snake_array.pop(); //pops out the last cell
 		}
+		var tail = {x: nx, y: ny};
 		//The snake can now eat the food.
 
 		snake_array.unshift(tail); //puts back the tail as the first cell
@@ -110,21 +131,24 @@ $(document).ready(function(){
 		{
 			var c = snake_array[i];
 			//Lets paint 10px wide cells
-			paint_cell(c.x, c.y);
+			paint_cell(c.x, c.y, 1);
 		}
 
 		//Lets paint the food
-		paint_cell(food.x, food.y);
+
+		paint_cell(food.x, food.y, 0);
+
+
 		//Lets paint the score
 		var score_text = "Score: " + score;
 		ctx.fillText(score_text, 5, h-5);
 	}
 
 	//Lets first create a generic function to paint cells
-	function paint_cell(x, y)
+	function paint_cell(x, y, isSnake)
 	{
-		//ctx.fillStyle = (x%2==0)?"orange":"blue";
-		ctx.fillStyle = "orange";
+		ctx.fillStyle = (isSnake) ? "red":"blue";
+		//ctx.fillStyle = "orange";
 		ctx.fillRect(x*cw, y*cw, cw, cw);
 		ctx.strokeStyle = "white";
 		ctx.strokeRect(x*cw, y*cw, cw, cw);
@@ -150,8 +174,13 @@ $(document).ready(function(){
 		else if(key == "38" && d != "down") d = "up";
 		else if(key == "39" && d != "left") d = "right";
 		else if(key == "40" && d != "up") d = "down";
-		console.log(key);
 		//The snake is now keyboard controllable
+		else if(key == "65") df = "left";
+		else if(key == "87") df = "up";
+		else if(key == "68") df = "right";
+		else if(key == "83") df = "down";
+
+
 	})
 
 
