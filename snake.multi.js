@@ -11,22 +11,37 @@ $(document).ready(function(){
 	var df;
 	var food;
 	var score;
+	var isPlaying = true;
 
 	//Lets create the snake now
 	var snake_array; //an array of cells to make up the snake
 
-	function init()
-	{
+	function startGameLoop(){
+		if(typeof game_loop != "undefined") clearInterval(game_loop);
+		game_loop = setInterval(paint, 60);
+		isPlaying = true;
+	}
+
+	function pauseGameLoop(){
+		clearInterval(game_loop);
+		isPlaying = false;
+	}
+
+	function restart(){
+		pauseGameLoop();
+		setTimeout(function(){
+			init();
+		},1000);
+	}
+
+	function init(){
 		d = "right"; //default direction
 		create_snake();
-		create_food(); //Now we can see the food particle
-		//finally lets display the score
+		create_food();
 		score = 0;
-
-		//Lets move the snake now using a timer which will trigger the paint function
-		//every 60ms
-		if(typeof game_loop != "undefined") clearInterval(game_loop);
-		game_loop = setInterval(paint, 33);
+		startGameLoop();
+		pauseGameLoop();
+		setTimeout(pauseGameLoop,100);
 	}
 	init();
 
@@ -36,7 +51,6 @@ $(document).ready(function(){
 		snake_array = []; //Empty array to start with
 		for(var i = length-1; i>=0; i--)
 		{
-			//This will create a horizontal snake starting from the top left
 			snake_array.push({x: i, y:0});
 		}
 	}
@@ -84,13 +98,30 @@ $(document).ready(function(){
 		//This will restart the game if the snake hits the wall
 		//Lets add the code for body collision
 		//Now if the head of the snake bumps into its body, the game will restart
-		if(nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array))
-		{
-			//restart game
-			init();
-			//Lets organize the code a bit now.
-			return;
+		if( nx == -1 || nx == w/cw || ny == -1 || ny == h/cw || check_collision(nx, ny, snake_array) ) {
+			restart(); // Snake collided, snake lost
+		} else if( food.x == -1 || food.x == w/cw || food.y == -1 || food.y == h/cw || isCaptured() ) {
+			restart(); // food collided , snake won
+		} else {
+			 score++;
 		}
+
+		if(score%5)
+			snake_array.pop(); //pops out the last cell
+
+		var tail = {x: nx, y: ny};
+		//The snake can now eat the food.
+
+		snake_array.unshift(tail); //puts back the tail as the first cell
+
+
+		//Lets paint the food
+		paint_snake();
+		paint_cell(food.x, food.y , 0);
+
+		//Lets paint the score
+		var score_text = "Score: " + score;
+		ctx.fillText(score_text, 5, h-5);
 
 		function isCaptured(){
 			if(nx == food.x && ny == food.y){
@@ -102,66 +133,30 @@ $(document).ready(function(){
 			}
 			return false;
 		}
+	}
 
-		if( isCaptured() ){
-			console.log('captured');
+	function paint_snake(){
+		for(var i = 0; i < snake_array.length; i++) {
+			paint_cell(snake_array[i].x, snake_array[i].y, 1);
 		}
-
-
-
-
-
-		//Lets write the code to make the snake eat the food
-		//The logic is simple
-		//If the new head position matches with that of the food,
-		//Create a new head instead of moving the tail
-		if(nx == food.x && ny == food.y) {
-			score++;
-			create_food();
-		}
-		else {
-			//snake_array.pop(); //pops out the last cell
-		}
-		var tail = {x: nx, y: ny};
-		//The snake can now eat the food.
-
-		snake_array.unshift(tail); //puts back the tail as the first cell
-
-		for(var i = 0; i < snake_array.length; i++)
-		{
-			var c = snake_array[i];
-			//Lets paint 10px wide cells
-			paint_cell(c.x, c.y, 1);
-		}
-
-		//Lets paint the food
-
-		paint_cell(food.x, food.y, 0);
-
-
-		//Lets paint the score
-		var score_text = "Score: " + score;
-		ctx.fillText(score_text, 5, h-5);
 	}
 
 	//Lets first create a generic function to paint cells
-	function paint_cell(x, y, isSnake)
-	{
+	function paint_cell(x, y, isSnake) {
+		ctx.beginPath();
 		ctx.fillStyle = (isSnake) ? "red":"blue";
-		//ctx.fillStyle = "orange";
-		ctx.fillRect(x*cw, y*cw, cw, cw);
-		ctx.strokeStyle = "white";
-		ctx.strokeRect(x*cw, y*cw, cw, cw);
+		//ctx.fillRect(x*cw, y*cw, cw, cw);
+		ctx.arc(x*cw+cw/2, y*cw+cw/2, cw/2, 0, 2 * Math.PI);
+		ctx.strokeStyle = "black";
+		ctx.fill();
+		ctx.stroke();
 	}
 
-	function check_collision(x, y, array)
-	{
-		//This function will check if the provided x/y coordinates exist
-		//in an array of cells or not
-		for(var i = 0; i < array.length; i++)
-		{
-			if(array[i].x == x && array[i].y == y)
-			 return true;
+	function check_collision(x, y, array) {
+		for(var i = 1; i < array.length; i++) {
+			if(array[i].x == x && array[i].y == y){
+				return true;
+			}
 		}
 		return false;
 	}
@@ -179,6 +174,18 @@ $(document).ready(function(){
 		else if(key == "87") df = "up";
 		else if(key == "68") df = "right";
 		else if(key == "83") df = "down";
+
+		else if(key == "82") {
+			startGameLoop();
+		}
+		else if(key == "80") {
+			pauseGameLoop();
+		}
+
+		if(!isPlaying && key!="80"){
+			startGameLoop();
+		}
+
 
 
 	})
