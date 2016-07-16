@@ -1,6 +1,30 @@
 <!-- Lets make a simple snake game -->
+<h1>Snake- Multiplayer Game</h1>
 <canvas id="canvas" width="450" height="450"></canvas>
 
 <!-- Jquery -->
 <script src="jquery-3.0.0.min.js"></script>
 <script src="snake.multi.js"></script>
+<style>
+  body{
+    text-align: center;
+    background: url(background-grass.jpg);
+  }
+  h1{
+    font-family: cursive;
+  }
+  canvas {
+    border: 10px solid black;
+    padding: 2px;
+    background: url(background-wood.jpg);
+    background-size: contain;
+  }
+  .scores-container{
+    position: absolute;
+    left: 0;
+    width: 200px;
+    margin: 3em 1em;
+    padding: 1em;
+    border: 1px solid black;
+  }
+</style>
