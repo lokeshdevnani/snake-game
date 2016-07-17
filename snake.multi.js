@@ -5,7 +5,6 @@ $(document).ready(function(){
 	var w = $("#canvas").width();
 	var h = $("#canvas").height();
 	var cw = 15; // cell width
-	ctx.font="15px Arial";
 
 
 	var ds; // direction snake
@@ -17,10 +16,31 @@ $(document).ready(function(){
 
 	var snake;
 	var food;
+		// left, up,right,  down
+	var keysArrow = [37,38,39,40];
+	var keysWasd  = [65,87,68,83];
+	var keysVim 	= [72,75,76,74];
+
+	var keyControls = {
+		'wasd': keysWasd,
+		'vim' : keysVim,
+		'arrow': keysArrow
+	};
+
+	var keysSnake = keysArrow;
+	var keysFood  = keysWasd;
+
+	$("#snakeControls").change(function(){
+		keysSnake = keyControls[$(this).val()];
+	});
+	$("#foodControls").change(function(){
+		keysFood = keyControls[$(this).val()];
+	});
+
 
 	function startGameLoop(){
 		if(typeof gameLoop != "undefined") clearInterval(gameLoop);
-		gameLoop = setInterval(gameFunction, 16); //12fps
+		gameLoop = setInterval(gameFunction, 80); //12fps
 		isPlaying = true;
 	}
 
@@ -32,8 +52,11 @@ $(document).ready(function(){
 	function restart(msg){
 		pauseGameLoop();
 		isSpawning = true;
-		paintStatus(msg);
 		setTimeout(function(){
+			paintStatus(msg);
+		},100);
+		setTimeout(function(){
+			paintStatus(msg);
 			init();
 		},2000);
 	}
@@ -95,7 +118,7 @@ $(document).ready(function(){
 		if( isCollidedWithWall(head) || checkCollision(head, snake) ) {
 			restart("SNAKE Crashed!!!"); // Snake collided, snake lost
 		} else if( isCollidedWithWall(food) || isCaptured(head, food) ) {
-			restart("FOOD Lost!!!"); // food collided , snake won
+			restart("FOOD Captured!!!"); // food collided , snake won
 			//createFood();
 		} else {
 			 score++;
@@ -141,11 +164,16 @@ $(document).ready(function(){
 
 	function paintScore(){
 		var scoreText = "Score: " + score;
+		ctx.font="15px Arial";
+		ctx.textAlign = "left";
 		ctx.fillText(scoreText, 5, h-5);
 	}
 
 	function paintStatus(str){
-		ctx.fillText(str, 100, 100);
+		ctx.font = "bold 30px verdana, sans-serif";
+		ctx.fillStyle = "#ff0000";
+		ctx.textAlign = "center";
+		ctx.fillText(str, w/2, h/2);
 	}
 
 	function checkCollision(head, array) {
@@ -160,15 +188,16 @@ $(document).ready(function(){
 	$(document).keydown(function(e){
 		var key = e.which;
 		//We will add another clause to prevent reverse gear
-		if 		 (key == "37" && ds != "right") ds = "left";
-		else if(key == "38" && ds != "down") 	ds = "up";
-		else if(key == "39" && ds != "left") 	ds = "right";
-		else if(key == "40" && ds != "up") 		ds = "down";
+
+		if 		 (key == keysSnake[0] && ds != "right") ds = "left";
+		else if(key == keysSnake[1] && ds != "down") 	ds = "up";
+		else if(key == keysSnake[2] && ds != "left") 	ds = "right";
+		else if(key == keysSnake[3] && ds != "up") 		ds = "down";
 		//The snake is now keyboard controllable
-		else if(key == "65") df = "left";
-		else if(key == "87") df = "up";
-		else if(key == "68") df = "right";
-		else if(key == "83") df = "down";
+		else if(key == keysFood[0]) df = "left";
+		else if(key == keysFood[1]) df = "up";
+		else if(key == keysFood[2]) df = "right";
+		else if(key == keysFood[3]) df = "down";
 
 		else if(key == "82") { // R
 			startGameLoop();
@@ -179,6 +208,6 @@ $(document).ready(function(){
 		if(!isPlaying && !isSpawning && key!="80"){
 			startGameLoop();
 		}
-	})
+	});
 
 })

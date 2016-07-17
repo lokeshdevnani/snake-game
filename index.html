@@ -1,7 +1,29 @@
 <!-- Lets make a simple snake game -->
 <h1>Snake- Multiplayer Game</h1>
-<canvas id="canvas" width="450" height="450"></canvas>
+<div>
 
+</div>
+<div>
+  <canvas id="canvas" width="450" height="450"></canvas>
+</div>
+<div>
+  <div class="control-div">
+    <label for="foodControls">Food Controls</label>
+    <select id="foodControls">
+      <option value="wasd" selected="true">W,A,S,D</option>
+      <option value="arrow">Arrow keys</option>
+      <option value="vim">Vim(H,J,K,L)</option>
+    </select>
+  </div>
+  <div class="control-div">
+    <label for="snakeControls">Snake Controls</label>
+    <select id="snakeControls">
+      <option value="wasd">W,A,S,D</option>
+      <option value="arrow" selected="true">Arrow keys</option>
+      <option value="vim">Vim(H,J,K,L)</option>
+    </select>
+  </div>
+</div>
 <!-- Jquery -->
 <script src="jquery-3.0.0.min.js"></script>
 <script src="snake.multi.js"></script>
@@ -23,8 +45,22 @@
     position: absolute;
     left: 0;
     width: 200px;
-    margin: 3em 1em;
+    margin: 2em 1em;
     padding: 1em;
     border: 1px solid black;
+  }
+  .control-div{
+    display: inline-block;
+    padding: 0.8em 2em;
+    font-family: cursive;
+  }
+  .control-div select, .control-div option {
+    display: block;
+    background: #641;
+    border-radius: 1em;
+    padding: 0.3em 0.5em;
+    color: white;
+    outline: none;
+    margin-top:0.2em;
   }
 </style>
