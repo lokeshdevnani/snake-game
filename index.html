@@ -1,37 +1,104 @@
-<!-- Lets make a simple snake game -->
-<h1>Snake- Multiplayer Game</h1>
-<div>
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Snake Game Multiplayer</title>
+    <meta name="description" content="Multiplayer version of legacy game snake. Not just snake is able to run but the food can run too.">
+    <meta name="author" content="Lokesh Devnani">
+    <meta name="keywords" content="snake game, multiplayer, best, lokesh, devnani, web developer, techie, hacker, app developer, designer, dancer, jecrc, student, computer science">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-</div>
-<div>
-  <canvas id="canvas" width="450" height="450"></canvas>
-</div>
-<div>
-  <div class="control-div">
-    <label for="foodControls">Food Controls</label>
-    <select id="foodControls">
-      <option value="wasd" selected="true">W,A,S,D</option>
-      <option value="arrow">Arrow keys</option>
-      <option value="vim">Vim(H,J,K,L)</option>
-    </select>
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png?v=3eeMNla6va">
+    <link rel="icon" type="image/png" href="/icons/favicon-32x32.png?v=3eeMNla6va" sizes="32x32">
+    <link rel="icon" type="image/png" href="/icons/favicon-16x16.png?v=3eeMNla6va" sizes="16x16">
+    <link rel="manifest" href="/icons/manifest.json?v=3eeMNla6va">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg?v=3eeMNla6va" color="#5bbad5">
+    <link rel="shortcut icon" href="/icons/favicon.ico?v=3eeMNla6va">
+    <meta name="apple-mobile-web-app-title" content="Lokesh Devnani">
+    <meta name="application-name" content="Lokesh Devnani">
+    <meta name="msapplication-config" content="/icons/browserconfig.xml?v=3eeMNla6va">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="Snake Multiplayer Game">
+    <meta itemprop="description" content="Snake Multiplayer Game is a 2 player game inspired by legacy snake game but with the prey that is the food, be able to run while the snake catches it.">
+    <meta itemprop="image" content="https://lokeshd.com/snake-game/snake-game.png">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@lokeshdevnani">
+    <meta name="twitter:title" content="Snake Multiplayer Game">
+    <meta name="twitter:description" content="Snake Multiplayer Game is a 2 player game inspired by legacy snake game but with the prey that is the food, be able to run while the snake catches it.">
+    <meta name="twitter:creator" content="@lokeshdevnani">
+    <meta name="twitter:image" content="http://lokeshd.com/snake-game/snake-game.png">
+
+    <!-- Open Graph data -->
+    <meta property="og:title" content="Snake Multiplayer Game" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://www.lokeshd.com/snake-game" />
+    <meta property="og:image" content="http://lokeshd.com/snake-game/snake-game.png" />
+    <meta property="og:image:width" content="720"/>
+    <meta property="og:image:height" content="480"/>
+    <meta property="og:description" content="Snake Multiplayer Game is a 2 player game inspired by legacy snake game but with the prey that is the food, be able to run while the snake catches it." />
+    <meta property="og:site_name" content="Snake Multiplayer Game" />
+    <meta property="og:locale" content="en_US" />
+
+    <meta property="fb:admins" content="100000140901340" />
+
+    <meta property="profile:first_name" content="Lokesh"/>
+    <meta property="profile:last_name" content="Devnani"/>
+    <meta property="profile:gender" content="male"/>
+    <meta property="profile:username" content="lokeshthepopper"/>
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+<section id="game">
+  <h1>Snake- Multiplayer Game</h1>
+  <div>
+    <canvas id="canvas" width="450" height="450"></canvas>
   </div>
-  <div class="control-div">
-    <label for="snakeControls">Snake Controls</label>
-    <select id="snakeControls">
-      <option value="wasd">W,A,S,D</option>
-      <option value="arrow" selected="true">Arrow keys</option>
-      <option value="vim">Vim(H,J,K,L)</option>
-    </select>
+  <div>
+    <div class="control-div">
+      <label for="foodControls">Food Controls</label>
+      <select id="foodControls">
+        <option value="wasd" selected="true">W,A,S,D</option>
+        <option value="arrow">Arrow keys</option>
+        <option value="vim">Vim(H,J,K,L)</option>
+      </select>
+    </div>
+    <div class="control-div">
+      <label for="snakeControls">Snake Controls</label>
+      <select id="snakeControls">
+        <option value="wasd">W,A,S,D</option>
+        <option value="arrow" selected="true">Arrow keys</option>
+        <option value="vim">Vim(H,J,K,L)</option>
+      </select>
+    </div>
   </div>
-</div>
-<!-- Jquery -->
-<script src="jquery-3.0.0.min.js"></script>
-<script src="snake.multi.js"></script>
+</section>
+
+<footer>
+    <p>&copy; Crafted and handcoded with <i class="heart-beat">&#10084;</i> by <a href="https://lokeshd.com" target="_blank">Lokesh Devnani</a> | 2016</p>
+</footer>
 <style>
   body{
     text-align: center;
     background: url(background-grass.jpg);
+    padding: 0;
+    margin: 0;
   }
+
   h1{
     font-family: cursive;
   }
@@ -63,4 +130,56 @@
     outline: none;
     margin-top:0.2em;
   }
+  footer{
+    padding: 0.5em;
+    background: url(background-wood.jpg) #641;
+    color: white;
+    font-family: Arial;
+    font-size: 0.8em;
+    margin-top: 1em;
+  }
+  footer a{
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  footer p{
+    margin: 0;
+  }
+  @keyframes heart-beat {
+       33%, 100% {
+          -webkit-transform: scale(1.6);
+          transform: scale(1.6);
+      }
+      0%, 25%, 75% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+      }
+  }
+
+  .heart-beat{
+    display: inline-block;
+    font-style: normal;
+    color: red;
+  }
+
+  footer:hover .heart-beat {
+      -webkit-animation: heart-beat 0.75s infinite;
+      animation: heart-beat 0.75s infinite;
+      cursor: pointer;
+  }
 </style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="jquery-3.0.0.min.js"><\/script>')</script>
+<script src="snake.multi.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-73294953-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

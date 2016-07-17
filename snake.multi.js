@@ -6,7 +6,6 @@ $(document).ready(function(){
 	var h = $("#canvas").height();
 	var cw = 15; // cell width
 
-
 	var ds; // direction snake
 	var df; // direction food
 
@@ -21,6 +20,7 @@ $(document).ready(function(){
 	var keysWasd  = [65,87,68,83];
 	var keysVim 	= [72,75,76,74];
 
+
 	var keyControls = {
 		'wasd': keysWasd,
 		'vim' : keysVim,
@@ -30,13 +30,16 @@ $(document).ready(function(){
 	var keysSnake = keysArrow;
 	var keysFood  = keysWasd;
 
+	var dirs = ['up','right','down','left'];
+	var keysRelativeSnake = false;
+	var keysRelativeFood  = false	;
+
 	$("#snakeControls").change(function(){
 		keysSnake = keyControls[$(this).val()];
 	});
 	$("#foodControls").change(function(){
 		keysFood = keyControls[$(this).val()];
 	});
-
 
 	function startGameLoop(){
 		if(typeof gameLoop != "undefined") clearInterval(gameLoop);
@@ -187,19 +190,29 @@ $(document).ready(function(){
 	//Lets add the keyboard controls now
 	$(document).keydown(function(e){
 		var key = e.which;
-		//We will add another clause to prevent reverse gear
+		e.preventDefault();
 
-		if 		 (key == keysSnake[0] && ds != "right") ds = "left";
-		else if(key == keysSnake[1] && ds != "down") 	ds = "up";
-		else if(key == keysSnake[2] && ds != "left") 	ds = "right";
-		else if(key == keysSnake[3] && ds != "up") 		ds = "down";
-		//The snake is now keyboard controllable
-		else if(key == keysFood[0]) df = "left";
-		else if(key == keysFood[1]) df = "up";
-		else if(key == keysFood[2]) df = "right";
-		else if(key == keysFood[3]) df = "down";
+		if(keysRelativeSnake){
+			if 		 (key == keysSnake[0])  ds = dirs[(dirs.indexOf(ds)+3)%4];
+			else if(key == keysSnake[2]) 	ds = dirs[(dirs.indexOf(ds)+1)%4];
+		} else {
+			if 		 (key == keysSnake[0] && ds != "right") ds = "left";
+			else if(key == keysSnake[1] && ds != "down") 	ds = "up";
+			else if(key == keysSnake[2] && ds != "left") 	ds = "right";
+			else if(key == keysSnake[3] && ds != "up") 		ds = "down";
+		}
 
-		else if(key == "82") { // R
+		if(keysRelativeFood){
+			if 		 (key == keysFood[0])	df = dirs[(dirs.indexOf(ds)+3)%4];
+			else if(key == keysFood[2])	df = dirs[(dirs.indexOf(ds)+1)%4];
+		} else {
+			if(key == keysFood[0]) df = "left";
+			else if(key == keysFood[1]) df = "up";
+			else if(key == keysFood[2]) df = "right";
+			else if(key == keysFood[3]) df = "down";
+		}
+
+		if(key == "82") { // R
 			startGameLoop();
 		} else if(key == "80") { //P
 			pauseGameLoop();
